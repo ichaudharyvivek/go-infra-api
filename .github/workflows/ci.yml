@@ -1,0 +1,25 @@
+# This workflow will build Go project
+# For more information, ref: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-go
+
+name: Infra API CI using Golang
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-go:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+      
+      - name: Build with Go
+        run: echo 'building with go lol'
