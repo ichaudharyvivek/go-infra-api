@@ -1,0 +1,23 @@
+# Build outputs
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+tmp/
+main
+bin/
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.log
+.idea/
+.vscode/
+
+# Dependency vendor folder
+vendor/
