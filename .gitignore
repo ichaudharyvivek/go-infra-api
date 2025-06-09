@@ -1,0 +1,53 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of the go build command
+/bin/
+/out/
+/tmp/
+/dist/
+
+# Go workspace file
+go.work
+
+# Dependency directories (remove if using Go Modules)
+/vendor/
+
+# Environment files
+.env
+env/*.env
+env/*.env.*
+!env/*.env.example
+
+# Logs
+*.log
+
+# IDE/editor files
+.vscode/
+.idea/
+.trunk/
+*.swp
+*.swo
+
+# macOS files
+.DS_Store
+
+# Linux files
+*~
+
+# JetBrains IDEs
+.idea/
+
+# Node modules (if using any frontend tooling)
+node_modules/
+
+# Coverage files
+coverage.out
+
+# Generated files
+*.out

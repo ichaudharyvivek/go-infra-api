@@ -1,0 +1,22 @@
+output:
+  - success
+
+pre-commit:
+  commands:
+    branch-name-check:
+      run: ./scripts/commit/check-branch-name.sh
+
+commit-msg:
+  commands:
+    commit-message-check:
+      run: ./scripts/commit/check-commit-message.sh {1}
+
+pre-push:
+  commands:
+    golangci-lint:
+      glob: "*.go"
+      run: golangci-lint run ./...
+      stage_fixed: false
+      skip:
+        - merge
+        - rebase

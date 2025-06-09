@@ -1,0 +1,23 @@
+# Note: Ref https://gist.github.com/maratori/47a4d00457a92aa426dbd48a18776322 for more details
+version: "2"
+
+run:
+  timeout: 2m
+  tests: true
+
+formatters:
+  enable:
+    - gofmt # Checks formatting
+    - goimports # Checks import grouping and ordering
+
+linters:
+  enable:
+    # Enabled by default linters (no need to mention explicitly):
+    # - errchec # Errcheck is a program for checking for unchecked errors in Go code. These unchecked errors can be critical bugs in some cases.
+    # - govet # Vet examines Go source code and reports suspicious constructs. It is roughly the same as 'go vet' and uses its passes. [auto-fix]
+    # - ineffassign # Detects when assignments to existing variables are not used. [fast]
+    # - staticcheck # It's the set of rules from staticcheck. [auto-fix]
+    # - unused # Checks Go code for unused constants, variables, functions and types.
+
+    # Added linters:
+    - misspell # Finds commonly misspelled english words. [fast, auto-fix]
