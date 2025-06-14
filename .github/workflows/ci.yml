@@ -1,13 +1,13 @@
 # This workflow will build Go project
 # For more information, ref: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-go
 
-name: Infra API CI using Golang
+name: CI Check
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   build-go:
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.24'
+          go-version: '1.24.x'
       
       - name: Build with Go
         run: echo 'building with go lol'

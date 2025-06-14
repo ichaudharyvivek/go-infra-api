@@ -1,0 +1,49 @@
+version: "3"
+
+tasks:
+  setup:
+    desc: "Set up dev environment"
+    cmds:
+      - bash ./scripts/install/golangci-lint.sh
+      - bash ./scripts/install/lefthook.sh
+      - bash ./scripts/install/task.sh
+    silent: false
+
+  # ------------------ RUN ------------------
+  run:all:
+    desc: "Run all microservices concurrently"
+    cmds:
+      - task:run:mc1 &
+      - task:run:mc2 &
+      - wait
+
+  run:mc1:
+    desc: "Run mc1 service"
+    dir: services/mc1
+    cmds:
+      - air || go run main.go
+
+  run:mc2:
+    desc: "Run mc2 service"
+    dir: services/mc2
+    cmds:
+      - air || go run main.go
+
+  # ------------------ BUILD ------------------
+  build:all:
+    desc: "Build all microservices"
+    cmds:
+      - task:build:mc1
+      - task:build:mc2
+
+  build:mc1:
+    desc: "Build mc1 service"
+    dir: services/mc1
+    cmds:
+      - go build -o ../../bin/mc1 ./cmd/api
+
+  build:mc2:
+    desc: "Build mc2 service"
+    dir: services/mc2
+    cmds:
+      - go build -o ../../bin/mc2

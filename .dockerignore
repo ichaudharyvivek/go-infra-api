@@ -1,23 +1,28 @@
-# Build outputs
-*.exe
-*.exe~
-*.dll
-*.so
-*.dylib
-*.test
-*.out
-tmp/
-main
-bin/
+# General
+**/.DS_Store
+**/.idea
+**/.vscode
+**/__pycache__/
+**/*.log
 
-# OS/editor junk
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-*.log
-.idea/
-.vscode/
+# Go build artifacts
+**/bin/
+**/dist/
+**/build/
+**/*.exe
+**/*.out
 
-# Dependency vendor folder
-vendor/
+# Go cache
+**/vendor/
+**/coverage.out
+
+# Dev tools
+.lefthook.yml
+.golangci.yml
+
+# Git
+.git
+.gitignore
+
+# Env
+.env*
