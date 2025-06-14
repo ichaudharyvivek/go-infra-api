@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  mc1:
+    container_name: "mc1"
+    build:
+      context: ../services/mc1
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3001:3000"
+    env_file:
+      - ../env/.env.local
+    volumes:
+      - ../services/mc1:/app
+      - ../bin/mc1:/app/bin
+    networks:
+      - app-network
+
+  mc2:
+    container_name: "mc2"
+    build:
+      context: ../services/mc2
+      dockerfile: Dockerfile
+      target: development
+    ports:
+      - "3002:3000"
+    env_file:
+      - ../env/.env.local
+    volumes:
+      - ../services/mc2:/app
+      - ../bin/mc2:/app/bin
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

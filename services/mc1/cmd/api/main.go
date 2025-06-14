@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"saas-api/internal/config"
-	"saas-api/internal/router"
+	"mc1/internal/config"
+	"mc1/internal/router"
 )
 
 func main() {

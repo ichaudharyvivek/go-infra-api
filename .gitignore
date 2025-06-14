@@ -7,13 +7,10 @@
 *.test
 
 # Output of the go build command
-/bin/
-/out/
-/tmp/
-/dist/
-
-# Go workspace file
-go.work
+**/bin/
+**/out/
+**/tmp/
+**/dist/
 
 # Dependency directories (remove if using Go Modules)
 /vendor/

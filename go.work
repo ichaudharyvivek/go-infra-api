@@ -1,0 +1,6 @@
+go 1.24.4
+
+use (
+	./services/mc1
+	./services/mc2
+)
