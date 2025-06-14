@@ -7,10 +7,10 @@
 *.test
 
 # Output of the go build command
-/bin/
-/out/
-/tmp/
-/dist/
+**/bin/
+**/out/
+**/tmp/
+**/dist/
 
 # Dependency directories (remove if using Go Modules)
 /vendor/

@@ -25,13 +25,13 @@ func NewRouter() http.Handler {
 		MaxAge:         300,
 	}))
 
-	r.Get("/api/v1/healthcheck", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/mc1/api/v1/healthcheck", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 
 		resp := map[string]any{
 			"success":   true,
-			"msg":       "The server is working as intended.",
+			"msg":       "The server is working as intended. Let's go....",
 			"timestamp": time.Now().In(time.Local).Format(time.RFC3339),
 		}
 

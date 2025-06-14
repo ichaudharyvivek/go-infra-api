@@ -2,6 +2,7 @@ version: "3.9"
 
 services:
   mc1:
+    container_name: "mc1"
     build:
       context: ../services/mc1
       dockerfile: Dockerfile
