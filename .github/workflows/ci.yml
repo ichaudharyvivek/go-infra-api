@@ -1,4 +1,4 @@
-# This workflow will build Go project
+# This workflow will build a Go project
 # For more information, ref: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-go
 
 name: CI Check
@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [main, develop]
 
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.number) || format('push-{0}', github.sha) }}
+  cancel-in-progress: true
+ 
 jobs:
   build-go:
     runs-on: ubuntu-latest
