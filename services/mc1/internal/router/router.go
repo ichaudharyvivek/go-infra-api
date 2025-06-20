@@ -42,5 +42,4 @@ func NewRouter() http.Handler {
 	})
 
 	return r
-	// yes
 }

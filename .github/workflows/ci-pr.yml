@@ -36,7 +36,7 @@ jobs:
                 '   Ref: `conventionalcommits.org` for more details'
               );
             } else {
-              console.log("✅ PR title follows the convention: " + title);
+              console.log("✅ PR title follows the convention. '" + title + "'");
             }
 
       - name: Checkout code
@@ -60,34 +60,25 @@ jobs:
       - name: Download Go modules
         run: |
           echo "📦 Processing Go modules..."
-
           # Find and process all directories with go.mod files
           find . -name "go.mod" -type f | while read -r gomod; do
             dir=$(dirname "$gomod")
             echo "🔄 Processing: $dir"
             
             cd "$dir"
-            go mod tidy
             go mod download
+            go mod tidy
             go mod verify
             cd - > /dev/null
           done
-
           echo "✅ All Go dependencies downloaded and tidied!"
 
       - name: Install golangci-lint
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
 
       - name: Run golangci-lint per service
         run: |
-          for service in ./services/*; do
-            if [ -f "$service/go.mod" ]; then
-              echo "🔍 Linting $service"
-              golangci-lint run --config .golangci.yml "$service/..."
-            else
-              echo "⏭️ Skipping $service (no go.mod)"
-            fi
-          done
-          echo ""
-          echo "✅ All services linted!"
+          go mod download &
+          go mod tidy &
+          go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...

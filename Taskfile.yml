@@ -12,17 +12,7 @@ tasks:
   lint:
     desc: Lint all Go services using golangci-lint
     cmds:
-      - |
-        for service in ./services/*; do
-          if [ -f "$service/go.mod" ]; then
-            echo "🔍 Linting $service"
-            golangci-lint run --config .golangci.yml "$service/..."
-          else
-            echo "⏭️  Skipping $service (no go.mod)"
-          fi
-        done
-        echo ""
-        echo "✅ All services linted!"
+      - go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
         
   # ------------------ RUN ------------------
   run:all:
