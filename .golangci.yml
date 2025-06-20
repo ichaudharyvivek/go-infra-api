@@ -11,7 +11,7 @@ formatters:
     - goimports # Checks import grouping and ordering
 
 linters:
-   enable:
+  enable:
     # Enabled by default linters (no need to mention explicitly):
     # - errchec # Errcheck is a program for checking for unchecked errors in Go code. These unchecked errors can be critical bugs in some cases.
     # - govet # Vet examines Go source code and reports suspicious constructs. It is roughly the same as 'go vet' and uses its passes. [auto-fix]

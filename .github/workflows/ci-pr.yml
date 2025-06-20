@@ -79,6 +79,4 @@ jobs:
 
       - name: Run golangci-lint per service
         run: |
-          go mod download &
-          go mod tidy &
           go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
