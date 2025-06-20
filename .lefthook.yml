@@ -15,7 +15,7 @@ pre-push:
   commands:
     golangci-lint:
       glob: "*.go"
-      run: golangci-lint run ./services/mc1/... ./services/mc2/...
+      run: task lint
       stage_fixed: false
       skip:
         - merge

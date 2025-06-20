@@ -79,18 +79,15 @@ jobs:
         run: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.55.2
 
-      - name: Run golangci-lint
+      - name: Run golangci-lint per service
         run: |
-          echo "🔍 Running golangci-lint on all Go modules..."
-
-          # Find and lint all directories with go.mod files
-          find . -name "go.mod" -type f | while read -r gomod; do
-            dir=$(dirname "$gomod")
-            echo "🔄 Linting: $dir"
-            
-            cd "$dir"
-            $(go env GOPATH)/bin/golangci-lint run ./...
-            cd - > /dev/null
+          for service in ./services/*; do
+            if [ -f "$service/go.mod" ]; then
+              echo "🔍 Linting $service"
+              golangci-lint run --config .golangci.yml "$service/..."
+            else
+              echo "⏭️ Skipping $service (no go.mod)"
+            fi
           done
-
-          echo "✅ All Go modules linted successfully!"
+          echo ""
+          echo "✅ All services linted!"
