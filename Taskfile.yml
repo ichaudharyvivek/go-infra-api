@@ -9,6 +9,11 @@ tasks:
       - bash ./scripts/install/task.sh
     silent: false
 
+  lint:
+    desc: Lint all Go services using golangci-lint
+    cmds:
+      - go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
+        
   # ------------------ RUN ------------------
   run:all:
     desc: "Run all microservices concurrently"

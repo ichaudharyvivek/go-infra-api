@@ -1,0 +1,83 @@
+# This workflow will build a Go project
+# For more information, ref: https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-go
+name: CI PR
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - edited
+
+concurrency:
+  group: ${{ format('pr-{0}', github.event.number) }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR title validation
+        uses: actions/github-script@v7
+        env:
+          CONVENTIONAL_COMMIT_REGEX: "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([\\w\\-\\.]+\\))?(!)?: [\\w\\s\\-,.():]+ \\((DEV|SISD|QA|BUG)-[0-9]{1,5}\\)\\.?$"
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            const pattern = new RegExp(process.env.CONVENTIONAL_COMMIT_REGEX);
+
+            if (!pattern.test(title)) {
+              core.setFailed(
+                '❌ PR title must follow convention:\n' +
+                '   <type>([optional scope]): <description> (<Jira ticket>)\n\n' +
+                '   Example: feat(auth): add login feature (S0-60230)\n' +
+                '   Ref: `conventionalcommits.org` for more details'
+              );
+            } else {
+              console.log("✅ PR title follows the convention. '" + title + "'");
+            }
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.24.4"
+
+      - name: Cache Go modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      - name: Download Go modules
+        run: |
+          echo "📦 Processing Go modules..."
+          # Find and process all directories with go.mod files
+          find . -name "go.mod" -type f | while read -r gomod; do
+            dir=$(dirname "$gomod")
+            echo "🔄 Processing: $dir"
+            
+            cd "$dir"
+            go mod download
+            go mod tidy
+            go mod verify
+            cd - > /dev/null
+          done
+          echo "✅ All Go dependencies downloaded and tidied!"
+
+      - name: Install golangci-lint
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
+
+      - name: Run golangci-lint per service
+        run: |
+          go work sync 
+          go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...

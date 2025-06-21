@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"mc1/internal/config"
 	"mc1/internal/router"
+	"net/http"
 )
 
 func main() {
