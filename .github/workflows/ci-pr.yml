@@ -57,27 +57,22 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Download Go modules
+      - name: Sync Go workspace modules
         run: |
-          echo "📦 Processing Go modules..."
-          # Find and process all directories with go.mod files
-          find . -name "go.mod" -type f | while read -r gomod; do
-            dir=$(dirname "$gomod")
-            echo "🔄 Processing: $dir"
-            
-            cd "$dir"
-            go mod download
-            go mod tidy
-            go mod verify
-            cd - > /dev/null
-          done
-          echo "✅ All Go dependencies downloaded and tidied!"
+          echo "📦 Syncing Go workspace modules..."
+          go work sync
+          echo "✅ Go workspace modules synced!"
 
       - name: Install golangci-lint
         run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
+          echo "Installing golangci-lint v1.64.7..."
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.64.7
 
       - name: Run golangci-lint per service
         run: |
-          go work sync 
+          echo "Running golangci-lint on all services..."
+          # Optional: Add `go clean -modcache` here if you suspect caching issues persist,
+          # but `go work sync` should mostly handle it.
+          # go clean -modcache
           go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
+          echo "✅ golangci-lint completed."
