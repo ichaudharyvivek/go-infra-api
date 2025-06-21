@@ -1,5 +1,3 @@
-// This is just a sample event used for [act](https://github.com/nektos/act)
-
 {
   "pull_request": {
     "title": "feat(auth): add login page (QA-123)"
