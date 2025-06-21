@@ -13,6 +13,11 @@ tasks:
     desc: Lint all Go services using golangci-lint
     cmds:
       - go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
+
+  test:
+    desc: "Run tests for all microservices"
+    cmds:
+      - go work edit -json | jq -r '.Use[].DiskPath' | xargs -I{} go test {}/...
         
   # ------------------ RUN ------------------
   run:all:

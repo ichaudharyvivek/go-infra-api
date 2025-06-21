@@ -76,3 +76,9 @@ jobs:
           # go clean -modcache
           go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
           echo "✅ golangci-lint completed."
+
+      - name: Run tests
+        run: |
+          echo "Running tests..."
+          go work edit -json | jq -r '.Use[].DiskPath' | xargs -I{} go test {}/...
+          echo "✅ All tests passed successfully!"
