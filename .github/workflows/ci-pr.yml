@@ -45,7 +45,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.24.x"
+          go-version: "1.24.4"
 
       - name: Cache Go modules
         uses: actions/cache@v3
@@ -79,4 +79,5 @@ jobs:
 
       - name: Run golangci-lint per service
         run: |
+          go work sync 
           go work edit -json | jq -r '.Use[].DiskPath'  | xargs -I{} golangci-lint run {}/...
